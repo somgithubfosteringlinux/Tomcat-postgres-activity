@@ -1065,7 +1065,7 @@ Overall, the dashboard shows that the PostgreSQL database is running smoothly wi
 
 The setup has been established to monitor the status codes and web server access logs to gather count of hits, analysis of GET,POST,HEAD requests along with status codes.
 
-And this will produce a simple flow chart :
+flow chart
 
 ```mermaid
 graph LR
@@ -1073,8 +1073,10 @@ syslog --
 Logs --> C(Filebeat)
 D{Elasticsearch} --> kibana
 C --> D
+```
 
 Below is the kibana dashboard fetched and created as per logs stored at elastcisearch:
+
 ![](https://github.com/somgithubfosteringlinux/Tomcat-postgres-activity/blob/main/images/kibana.png)
 
 Expaination for the custom dashboards:
