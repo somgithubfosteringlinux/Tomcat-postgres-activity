@@ -306,7 +306,7 @@ Execute the same using below command:
 
     - name: Clone the Git repository
       git:
-        repo: "http://{{ git_username }}:{{ git_password }}@<gitlabip>:8083/deploy/{{ repo_name }}.git"
+        repo: "http://{{ git_username }}:{{ git_password }}@gitlabip:8083/deploy/{{ repo_name }}.git"
         dest: "{{ git_dest }}/{{ repo_name }}"
         version: v1
       register: git_clone_result
