@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Create a directory for PostgreSQL slave data
+      file:
+        path: /Project/postgres-slave-data
+        state: directory
+
+    - name: Start PostgreSQL slave container
+      docker_container:
+        name: postgres-slave
+        image: postgres:15
+        ports:
+          - "5433:5432"
+        volumes:
+          - /Project/postgres-slave-data:/var/lib/postgresql/data
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: redhat123
+        state: started
+        restart_policy: always
+        networks:
+          - name: postgres_network
+
+    - name: Stop slave container to sync with master
+      docker_container:
+        name: postgres-slave
+        state: stopped
+
+    - name: Clean up old data
+      shell: "rm -rf /Project/postgres-slave-data/*"
+
+    - name: Copy data from master to slave
+      shell: |
+        docker run --rm \
+        -v /Project/postgres-slave-data:/var/lib/postgresql/data \
+        --network container:postgres-master \
+        postgres:15 \
+        bash -c "pg_basebackup -h 127.0.0.1 -U replica -D /var/lib/postgresql/data -Fp -Xs -P -R"
+
+    - name: Copy recovery.conf to slave container
+      template:
+        src: /home/somesh/Documents/NEWSETUP/configs/slave.conf
+        dest: /Project/postgres-slave-data/postgresql.conf
+
+    - name: Start PostgreSQL slave container
+      docker_container:
+        name: postgres-slave
+        state: started
