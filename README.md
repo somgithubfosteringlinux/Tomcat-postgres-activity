@@ -83,8 +83,20 @@ Execute the same using below command:
     ```ansible-playbook -i /etc/ansible/hosts tomcat_setup.yml
     ```   
 ----------------------------------------------------------------
+# Postgres Master-slave Streaming Replication
 
 ##   Postgres Master setup:
+
+Create a config file for postgres master setup:
+
+```
+listen_addresses = '*'
+wal_level = replica
+max_wal_senders = 3
+wal_keep_size = 16MB
+
+```
+Then execuet the below playbook to setup master container using the config file:
 
 ```
 ---
@@ -105,7 +117,7 @@ Execute the same using below command:
     - name: Start PostgreSQL master container
       docker_container:
         name: postgres-master
-        image: postgres:15
+        image: postgres:16
         ports:
           - "5432:5432"
         volumes:
@@ -148,6 +160,13 @@ Execute the same using below command:
 
 ##   Postgres Slave setup:
 
+Create the slave config file as slave.config
+```
+primary_conninfo = 'host=postgres-master port=5432 user=replica password=redhat'
+
+```
+Execute the playbook to create slave container.
+
 ```
 ---
 - hosts: localhost
@@ -162,7 +181,7 @@ Execute the same using below command:
     - name: Start PostgreSQL slave container
       docker_container:
         name: postgres-slave
-        image: postgres:15
+        image: postgres:16
         ports:
           - "5433:5432"
         volumes:
@@ -194,7 +213,7 @@ Execute the same using below command:
     - name: Copy recovery.conf to slave container
       template:
         src: /home/somesh/Documents/NEWSETUP/configs/slave.conf
-        dest: /Project/postgres-slave-data/postgresql.conf
+        dest: /Project/postgres-slave-data/postgresql.auto.conf
 
     - name: Start PostgreSQL slave container
       docker_container:
