@@ -1022,7 +1022,7 @@ promhttp_metric_handler_requests_total{code="503"} 0
 Now Plot the Graph in Grafana.
 Here, few metrics are gathered and graph displayed by adding the Grok pattern
 
-
+![](https://github.com/somgithubfosteringlinux/Tomcat-postgres-activity/blob/main/images/grafana.png)
 
 ---------------------------------------------------------------------------------
 ### Sources
