@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Install HAProxy
+      apt:
+        name: haproxy
+        state: present
+
+    - name: Create HAProxy configuration file
+      template:
+        src: /home/somesh/Documents/NEWSETUP/configs/haproxy.cfg
+        dest: /etc/haproxy/haproxy.cfg
+
+    - name: Start and enable HAProxy service
+      systemd:
+        name: haproxy
+        state: started
+        enabled: yes
+
+    - name: Restart HAProxy to apply the new configuration
+      systemd:
+        name: haproxy
+        state: restarted
