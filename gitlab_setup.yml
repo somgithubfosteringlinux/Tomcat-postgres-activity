@@ -1,0 +1,42 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Create a directory for GitLab configuration
+      file:
+        path: /Project/gitlab/config
+        state: directory
+
+    - name: Create a directory for GitLab data
+      file:
+        path: /Project/gitlab/data
+        state: directory
+
+    - name: Create a directory for GitLab logs
+      file:
+        path: /Project/gitlab/logs
+        state: directory
+
+    - name: Start GitLab container
+      docker_container:
+        name: gitlab
+        image: gitlab/gitlab-ee:latest
+        ports:
+          - "8083:80"
+          - "8443:443"
+          - "2222:22"
+        volumes:
+          - /Project/gitlab/config:/etc/gitlab
+          - /Project/gitlab/data:/var/opt/gitlab
+          - /Project/gitlab/logs:/var/log/gitlab
+        env:
+          GITLAB_OMNIBUS_CONFIG: |
+            external_url 'http://localhost:8083'
+        state: started
+        restart_policy: always
+
+    - name: Configure GitLab with initial settings
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: gitlab-ctl reconfigure
