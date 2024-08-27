@@ -18,6 +18,14 @@ Design and Implement a robust and scalable application platform for an organizat
 
 # Setup steps and Explaination
 Note: Ansible and Docker has been already installed as a prerequisite for the setup.
-###   Tomcat Installation:
-Below is the ansible playbook to install and configure two tomcat instances in a single go.
 
+###   Tomcat Installation:
+
+Below is the ansible playbook to install and configure two tomcat instances in a single go.
+[tomcat_setup.yml
+](https://github.com/somgithubfosteringlinux/Tomcat-postgres-activity/blob/main/playbooks/tomcat_setup.yml)
+
+Execute the same using below command:
+
+    ```ansible-playbook -i /etc/ansible/hosts tomcat_setup.yml
+    ```   
