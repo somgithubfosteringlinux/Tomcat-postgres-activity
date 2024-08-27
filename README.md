@@ -1027,36 +1027,30 @@ Here, few metrics are gathered and graph displayed by adding the Grok pattern
 
 Here the metrics monitored are:
 
-DB up status: Indicates if the database is up and running.
-Replication_lag_seconds: Measures the delay between the primary and replica databases.
-process_cpu_seconds_total: Shows the total CPU time consumed by the database process.
-OPS: Represents the number of operations per second performed by the database.
-Replication Status:
+1. DB up status: Indicates if the database is up and running.
+2. Replication_lag_seconds: Measures the delay between the primary and replica databases.
+3. process_cpu_seconds_total: Shows the total CPU time consumed by the database process.
+4. OPS: Represents the number of operations per second performed by the database.
+5. Replication status - reply time: Displays the reply time for replication messages.
+6. Number of active connections: Shows the number of active connections to the database.
+7. Name: Lists the different databases.
+8. Mean, Max: Show the average and maximum number of backends for each database.
+9. fetched, returned, inserted, updated, deleted: Indicate the number of rows fetched, returned, inserted, updated, and deleted for each database.
+10. Cache hit ratio: Displays the percentage of cache hits for different databases.
+11. Conflicts/Deadlocks: Shows the number of conflicts and deadlocks that occurred.
 
-Replication status - reply time: Displays the reply time for replication messages.
-Rows:
+- [] Key Observations:
 
-Number of active connections: Shows the number of active connections to the database.
-Name: Lists the different databases.
-Mean, Max: Show the average and maximum number of backends for each database.
-fetched, returned, inserted, updated, deleted: Indicate the number of rows fetched, returned, inserted, updated, and deleted for each database.
-Cache Hit Ratio:
+- [DB up status: The database is up and running.]
+- [Replication_lag_seconds: The replication lag is low, indicating good replication health.]
+- [process_cpu_seconds_total: The CPU usage is moderate .]
+- [OPS: The number of operations per second is relatively high.]
+- [Replication status - reply time: The reply time for replication messages is within an acceptable range.]
+- [Number of active connections: The number of active connections is moderate.]
+- [Rows: The mydb database has the highest number of backends, indicating it might be the most heavily used database.]
+- [Cache hit ratio: The cache hit ratio for all databases is relatively high, indicating efficient caching.]
+- [Conflicts/Deadlocks: The number of conflicts and deadlocks is low.]
 
-Cache hit ratio: Displays the percentage of cache hits for different databases.
-Conflicts/Deadlocks:
-
-Conflicts/Deadlocks: Shows the number of conflicts and deadlocks that occurred.
-Key Observations:
-
-DB up status: The database is up and running.
-Replication_lag_seconds: The replication lag is low, indicating good replication health.
-process_cpu_seconds_total: The CPU usage is moderate.
-OPS: The number of operations per second is relatively high.
-Replication status - reply time: The reply time for replication messages is within an acceptable range.
-Number of active connections: The number of active connections is moderate.
-Rows: The mydb database has the highest number of backends, indicating it might be the most heavily used database.
-Cache hit ratio: The cache hit ratio for all databases is relatively high, indicating efficient caching.
-Conflicts/Deadlocks: The number of conflicts and deadlocks is low.
 Overall, the dashboard shows that the PostgreSQL database is running smoothly with good performance and minimal issues. However, further analysis of the data may be required to identify potential bottlenecks or areas for optimization.
 
 --------------------------------------------------------------------------------
@@ -1104,21 +1098,21 @@ Expaination for the custom dashboards:
  - Filters: Allows you to filter the results based on method, status code, and IP address.
  - Count of records: Displays the number of records for each combination of method, status code, and IP address.
 
--[] Key Observations:
+- [] Key Observations:
 
--[Web logs count: The total number of web logs is 24.]
+- [Web logs count: The total number of web logs is 24.]
 
--[Top values of log.file.path: The log file paths /Project/all_logs/tomcat1/logs/localhost_access.log and /Project/all_logs/tomcat2/logs/localhost_access.log have the highest number of records.]
+- [Top values of log.file.path: The log file paths /Project/all_logs/tomcat1/logs/localhost_access.log and /Project/all_logs/tomcat2/logs/localhost_access.log have the highest number of records.]
 
--[Tomcat1: Status Codes: The most common status codes for Tomcat1 are 200 (successful requests), 404 (not found), and 301 (moved permanently).]
+- [Tomcat1: Status Codes: The most common status codes for Tomcat1 are 200 (successful requests), 404 (not found), and 301 (moved permanently).]
 
--[Tomcat2: Status Codes: The most common status codes for Tomcat2 are 200 (successful requests), 404 (not found), and 302 (found).]
+- [Tomcat2: Status Codes: The most common status codes for Tomcat2 are 200 (successful requests), 404 (not found), and 302 (found).]
 
--[Methods: GET/POST/HEAD-200: The majority of requests are GET requests with status code 200.]
+- [Methods: GET/POST/HEAD-200: The majority of requests are GET requests with status code 200.]
 
--[Methods: GET-404: Most 404 errors are due to GET requests.]
+- [Methods: GET-404: Most 404 errors are due to GET requests.]
 
--[Methods: POST-403/504/405: There are a few POST requests with status codes 403 (forbidden), 504 (gateway timeout), and 405 (method not allowed).]
+- [Methods: POST-403/504/405: There are a few POST requests with status codes 403 (forbidden), 504 (gateway timeout), and 405 (method not allowed).]
 
 Overall, the dashboard provides valuable insights into the web logs of the Tomcat servers. It helps identify common status codes, HTTP methods, and IP addresses involved in requests. This information can be used to troubleshoot issues, optimize performance, and improve security.
 
