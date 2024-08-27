@@ -284,7 +284,7 @@ Execute the same using below command:
 ```
 -----------------------------------------------------------------------
 ##   Deployment setup:
-
+```
 ---
 - name: Deploy WAR to Tomcat
   hosts: localhost
@@ -322,3 +322,4 @@ Execute the same using below command:
 
     - name: Copy the WAR file to Tomcat webapps directory
       shell: cp {{ git_dest }}{{ repo_name }}/target/{{ war_file_name }} {{ tomcat_home }}/
+```
