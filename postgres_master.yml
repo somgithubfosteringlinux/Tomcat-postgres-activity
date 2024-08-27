@@ -1,0 +1,55 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Create a directory for PostgreSQL master data
+      file:
+        path: /Project/postgres-master-data
+        state: directory
+
+    - name: Create network for PostgreSQL
+      docker_network:
+        name: postgres_network
+        state: present
+
+    - name: Start PostgreSQL master container
+      docker_container:
+        name: postgres-master
+        image: postgres:15
+        ports:
+          - "5432:5432"
+        volumes:
+          - /Project/postgres-master-data:/var/lib/postgresql/data
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: redhat123
+          POSTGRES_DB: postgres
+        state: started
+        restart_policy: always
+        networks:
+          - name: postgres_network
+
+    - name: Copy postgresql.conf to master container
+      template:
+        src: /home/somesh/Documents/NEWSETUP/configs/postgresql.conf
+        dest: /Project/postgres-master-data/postgresql.conf
+
+        #    - name: Restart PostgreSQL master container to apply configuration
+        #      docker_container:
+        #        name: postgres-master
+        #        state: restarted
+    - name: Stop PostgreSQL master container
+      docker_container:
+        name: postgres-master
+        state: stopped
+
+    - name: Start PostgreSQL master container
+      docker_container:
+        name: postgres-master
+        state: started
+
+    - name: Create replication user
+      community.docker.docker_container_exec:
+        container: postgres-master
+        command: psql -U postgres -c "CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD 'redhat';"
