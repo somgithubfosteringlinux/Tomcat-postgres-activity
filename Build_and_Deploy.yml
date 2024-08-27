@@ -1,0 +1,37 @@
+---
+- name: Deploy WAR to Tomcat
+  hosts: localhost
+  become: yes
+  vars:
+    git_username: "devops1"
+    git_password: "xxxxxxxx"
+    repo_name: "loginapp"
+    git_dest: "/Project/cloned/"
+    maven_home: "/usr/share/maven"
+    tomcat_home: "/Project/docroot1"
+    war_file_name: "loginapp-1.war"
+
+  tasks:
+    - name: Remove the existing repository directory if it exists
+      file:
+        path: "{{ git_dest }}/{{ repo_name }}"
+        state: absent
+
+    - name: Clone the Git repository
+      git:
+        repo: "http://{{ git_username }}:{{ git_password }}@gitlabIP:8083/deploy/{{ repo_name }}.git"
+        dest: "{{ git_dest }}/{{ repo_name }}"
+        #        version: main
+      register: git_clone_result
+
+    - name: Build the WAR file using Maven
+      shell: |
+        export MAVEN_HOME={{ maven_home }}
+        cd {{ git_dest }}/{{ repo_name }}
+        mvn clean package
+      when: git_clone_result.changed
+      args:
+        chdir: "{{ git_dest }}"
+
+    - name: Copy the WAR file to Tomcat webapps directory
+      shell: cp {{ git_dest }}{{ repo_name }}/target/{{ war_file_name }} {{ tomcat_home }}/
