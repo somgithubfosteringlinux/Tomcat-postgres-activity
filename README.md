@@ -308,7 +308,7 @@ Execute the same using below command:
       git:
         repo: "http://{{ git_username }}:{{ git_password }}@<gitlabip>:8083/deploy/{{ repo_name }}.git"
         dest: "{{ git_dest }}/{{ repo_name }}"
-        #        version: main
+        version: v1
       register: git_clone_result
 
     - name: Build the WAR file using Maven
